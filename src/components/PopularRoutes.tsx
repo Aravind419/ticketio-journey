@@ -7,34 +7,38 @@ import { useNavigate } from 'react-router-dom';
 const popularRoutes = [
   {
     id: 1,
-    from: 'Mumbai',
-    to: 'Pune',
-    image: 'https://images.unsplash.com/photo-1570168225611-81873809cf95?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '3h 15m',
+    from: "Mumbai",
+    to: "Pune",
+    image:
+      "https://www.piramalrealty.com/_next/image?url=%2Fimages%2Fblogs%2FMumbai-Pune-Expressway-Distance-Route-Map-Cost-and-Impact-On-Real-Estate.jpg&w=1920&q=75",
+    time: "3h 15m",
     price: 550,
   },
   {
     id: 2,
-    from: 'Delhi',
-    to: 'Jaipur',
-    image: 'https://images.unsplash.com/photo-1599831013079-1a38c1961781?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '5h 30m',
+    from: "Delhi",
+    to: "Jaipur",
+    image:
+      "https://rishikeshdaytour.com/blog/wp-content/uploads/2024/11/Discover-How-far-is-Delhi-to-Jaipur-by-car-and-by-train-770x515.jpg",
+    time: "5h 30m",
     price: 750,
   },
   {
     id: 3,
-    from: 'Bengaluru',
-    to: 'Chennai',
-    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '6h 45m',
+    from: "Bengaluru",
+    to: "Chennai",
+    image:
+      "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+    time: "6h 45m",
     price: 850,
   },
   {
     id: 4,
-    from: 'Hyderabad',
-    to: 'Vijayawada',
-    image: 'https://images.unsplash.com/photo-1596359901321-3ba98b3192e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '4h 30m',
+    from: "Hyderabad",
+    to: "Vijayawada",
+    image:
+      "https://www.skymetweather.com/content/wp-content/uploads/2017/03/Hyderabad-Main1.jpg",
+    time: "4h 30m",
     price: 650,
   },
 ];

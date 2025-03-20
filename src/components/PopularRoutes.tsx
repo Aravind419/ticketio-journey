@@ -2,43 +2,69 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const popularRoutes = [
   {
     id: 1,
-    from: 'New York',
-    to: 'Boston',
-    image: 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '4h 30m',
-    price: 45,
+    from: 'Mumbai',
+    to: 'Pune',
+    image: 'https://images.unsplash.com/photo-1570168225611-81873809cf95?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    time: '3h 15m',
+    price: 550,
   },
   {
     id: 2,
-    from: 'Chicago',
-    to: 'Detroit',
-    image: 'https://images.unsplash.com/photo-1597916829826-02e5bb4a54e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '5h 15m',
-    price: 38,
+    from: 'Delhi',
+    to: 'Jaipur',
+    image: 'https://images.unsplash.com/photo-1599831013079-1a38c1961781?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    time: '5h 30m',
+    price: 750,
   },
   {
     id: 3,
-    from: 'Los Angeles',
-    to: 'San Francisco',
-    image: 'https://images.unsplash.com/photo-1591025810539-a321000c6615?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '7h 45m',
-    price: 55,
+    from: 'Bengaluru',
+    to: 'Chennai',
+    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    time: '6h 45m',
+    price: 850,
   },
   {
     id: 4,
-    from: 'Miami',
-    to: 'Orlando',
-    image: 'https://images.unsplash.com/photo-1611161356639-ad833f167a45?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    time: '3h 45m',
-    price: 35,
+    from: 'Hyderabad',
+    to: 'Vijayawada',
+    image: 'https://images.unsplash.com/photo-1596359901321-3ba98b3192e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+    time: '4h 30m',
+    price: 650,
   },
 ];
 
 const RouteCard = ({ route, index }: { route: typeof popularRoutes[0], index: number }) => {
+  const navigate = useNavigate();
+  
+  const handleBookNow = () => {
+    // Store the route information in session storage
+    sessionStorage.setItem('selectedRoute', JSON.stringify({
+      from: route.from,
+      to: route.to,
+      price: route.price
+    }));
+    
+    // Scroll to the booking form
+    const bookingForm = document.getElementById('booking-form');
+    if (bookingForm) {
+      bookingForm.scrollIntoView({ behavior: 'smooth' });
+      
+      // Pre-fill the booking form
+      setTimeout(() => {
+        const event = new CustomEvent('prefill-route', { 
+          detail: { from: route.from, to: route.to }
+        });
+        document.dispatchEvent(event);
+      }, 800);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -68,10 +94,13 @@ const RouteCard = ({ route, index }: { route: typeof popularRoutes[0], index: nu
             <span>{route.time}</span>
           </div>
           <div className="text-brand-red font-bold text-lg">
-            ${route.price}
+            ₹{route.price}
           </div>
         </div>
-        <button className="w-full py-2.5 bg-white text-brand-red font-medium border border-brand-red rounded-lg hover:bg-brand-red hover:text-white transition-colors duration-300">
+        <button 
+          className="w-full py-2.5 bg-white text-brand-red font-medium border border-brand-red rounded-lg hover:bg-brand-red hover:text-white transition-colors duration-300"
+          onClick={handleBookNow}
+        >
           Book Now
         </button>
       </div>

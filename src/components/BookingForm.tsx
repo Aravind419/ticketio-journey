@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, ArrowRight, Bus, User, CalendarIcon, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,14 +16,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useToast } from "@/components/ui/use-toast";
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 
 const cities = [
-  "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", 
-  "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Jacksonville", 
-  "Fort Worth", "Columbus", "Charlotte", "San Francisco", "Indianapolis"
+  "Mumbai", "Delhi", "Bengaluru", "Hyderabad", "Chennai", 
+  "Kolkata", "Pune", "Jaipur", "Ahmedabad", "Surat", 
+  "Lucknow", "Kanpur", "Nagpur", "Indore", "Thane", 
+  "Bhopal", "Visakhapatnam", "Pimpri-Chinchwad", "Patna", "Vadodara",
+  "Ghaziabad", "Ludhiana", "Coimbatore", "Agra", "Madurai",
+  "Nashik", "Faridabad", "Meerut", "Rajkot", "Varanasi",
+  "Amritsar", "Allahabad", "Vijayawada", "Kochi", "Mysore"
 ];
 
 const BookingForm = () => {
@@ -31,6 +36,8 @@ const BookingForm = () => {
   const [toCity, setToCity] = useState("");
   const [date, setDate] = useState<Date>();
   const [passengers, setPassengers] = useState("1");
+  const [isSearching, setIsSearching] = useState(false);
+  const { toast } = useToast();
 
   const handleSwapCities = () => {
     const temp = fromCity;
@@ -40,16 +47,70 @@ const BookingForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({
-      fromCity,
-      toCity,
-      date: date ? format(date, 'PP') : '',
-      passengers
-    });
+    
+    if (!fromCity || !toCity) {
+      toast({
+        title: "Missing Information",
+        description: "Please select both departure and arrival cities.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!date) {
+      toast({
+        title: "Missing Information",
+        description: "Please select your travel date.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSearching(true);
+    
+    // Simulate search
+    setTimeout(() => {
+      setIsSearching(false);
+      
+      toast({
+        title: "Search Complete",
+        description: `Found buses from ${fromCity} to ${toCity} on ${format(date, 'PPP')} for ${passengers} passenger(s).`,
+      });
+      
+      // Store booking data (for demonstration)
+      sessionStorage.setItem('bookingDetails', JSON.stringify({
+        from: fromCity,
+        to: toCity,
+        date: format(date, 'PPP'),
+        passengers
+      }));
+    }, 1500);
   };
+  
+  // Listen for prefill events from route cards
+  useEffect(() => {
+    const handlePrefill = (e: CustomEvent) => {
+      const { from, to } = e.detail;
+      setFromCity(from);
+      setToCity(to);
+      
+      // Set default date to tomorrow if not already set
+      if (!date) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        setDate(tomorrow);
+      }
+    };
+    
+    document.addEventListener('prefill-route', handlePrefill as EventListener);
+    
+    return () => {
+      document.removeEventListener('prefill-route', handlePrefill as EventListener);
+    };
+  }, [date]);
 
   return (
-    <div className="max-w-5xl mx-auto px-6 -mt-28 relative z-10">
+    <div id="booking-form" className="max-w-5xl mx-auto px-6 -mt-28 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -193,9 +254,19 @@ const BookingForm = () => {
               <Button
                 type="submit"
                 className="w-full h-12 mt-auto bg-brand-red hover:bg-brand-darkRed transition-colors duration-300"
+                disabled={isSearching}
               >
-                <Search size={18} className="mr-2" />
-                Search
+                {isSearching ? (
+                  <div className="flex items-center">
+                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    <span>Searching</span>
+                  </div>
+                ) : (
+                  <>
+                    <Search size={18} className="mr-2" />
+                    Search
+                  </>
+                )}
               </Button>
             </div>
           </div>

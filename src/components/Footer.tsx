@@ -56,12 +56,12 @@ const Footer = () => {
               <li className="flex items-start">
                 <MapPin size={20} className="mr-3 text-brand-red mt-1 flex-shrink-0" />
                 <span className="text-brand-gray-300">
-                  Veppanapalli , Krishnagiri-District
+                  123 Travel Street, Transport City, NY 10001, USA
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone size={20} className="mr-3 text-brand-red flex-shrink-0" />
-                <span className="text-brand-gray-300">+91 98765434210</span>
+                <span className="text-brand-gray-300">+1 (555) 123-4567</span>
               </li>
               <li className="flex items-center">
                 <Mail size={20} className="mr-3 text-brand-red flex-shrink-0" />

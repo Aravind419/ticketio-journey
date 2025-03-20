@@ -1,12 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,20 +69,41 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            className={cn(
-              "font-medium transition-colors",
-              isScrolled ? 'text-gray-800 hover:text-brand-red hover:bg-gray-100/60' : 'text-white hover:text-white hover:bg-white/10'
-            )}
-          >
-            Sign In
-          </Button>
-          <Button
-            className="bg-brand-red hover:bg-brand-darkRed text-white transition-colors duration-300"
-          >
-            Book Now
-          </Button>
+          <SignedOut>
+            <Button
+              variant="ghost"
+              className={cn(
+                "font-medium transition-colors",
+                isScrolled ? 'text-gray-800 hover:text-brand-red hover:bg-gray-100/60' : 'text-white hover:text-white hover:bg-white/10'
+              )}
+              onClick={() => navigate('/sign-in')}
+            >
+              Sign In
+            </Button>
+            <Button
+              className="bg-brand-red hover:bg-brand-darkRed text-white transition-colors duration-300"
+              onClick={() => navigate('/sign-up')}
+            >
+              Sign Up
+            </Button>
+          </SignedOut>
+          
+          <SignedIn>
+            <Button
+              className="bg-brand-red hover:bg-brand-darkRed text-white transition-colors duration-300 mr-2"
+              onClick={() => navigate('/dashboard')}
+            >
+              Book Now
+            </Button>
+            <UserButton 
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "w-10 h-10",
+                }
+              }}
+            />
+          </SignedIn>
         </div>
 
         {/* Mobile Menu Button */}
@@ -106,12 +130,42 @@ const Navbar = () => {
               </a>
             ))}
             <div className="flex flex-col space-y-3 pt-3 border-t">
-              <Button variant="outline" className="w-full justify-center">
-                Sign In
-              </Button>
-              <Button className="w-full justify-center bg-brand-red hover:bg-brand-darkRed">
-                Book Now
-              </Button>
+              <SignedOut>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-center"
+                  onClick={() => {
+                    navigate('/sign-in');
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  className="w-full justify-center bg-brand-red hover:bg-brand-darkRed"
+                  onClick={() => {
+                    navigate('/sign-up');
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </SignedOut>
+              
+              <SignedIn>
+                <Button 
+                  className="w-full justify-center bg-brand-red hover:bg-brand-darkRed"
+                  onClick={() => {
+                    navigate('/dashboard');
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Dashboard
+                </Button>
+                <div className="flex justify-center py-2">
+                  <UserButton afterSignOutUrl="/" />
+                </div>
+              </SignedIn>
             </div>
           </div>
         </div>
